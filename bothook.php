@@ -1,45 +1,61 @@
 <?php
-
 include_once('conf.php');
-
 spl_autoload_register(function($class) {
 	include_once 'classes/' . $class . '.php';
 });
-
 $content = file_get_contents("php://input");
 $update = json_decode($content, true);
 $chat_id = $update["message"]["chat"]["id"];
 $message = $update["message"]["text"];
-
 // Available bot commands
 $commands = [
 	
-	// Msg de compra para teste
-	'compra',
-	// Msg de compra para teste Sim
-	'S',
-	// Msg de compra para teste Não
-	'N',
-	// TCod para finalizar
-	'ABC123',
-
-];
-
-$arguments = [
+	// // General Commands
+	// 'help',
+	// // Server Commands
+	// 'server',
 	
-	'S'=>[
-		's_compra',
-	],
-	'N'=>[
-		'n_compra',
-	],
-	'ABC123'=>[
-		'f_compra',
-	],
+	'compra',
+
+	'sim',
+
+	'nao',
+	
+	'aBc123',
+	
+	// // Alias for /server uname
+	// 'uname',
+	// // Alias for /server who
+	// 'who',
+	// // Alias for /server disk
+	// 'disk'
 ];
-
+$arguments = [
+	// Server
+	'server'=>[
+		'uptime',
+		'uname',
+		'who',
+		'disk'
+	],
+	'help'=>[
+		'server'
+	],
+	// 'compra'=>[
+	// 	'confirmarCompra'
+	// ],
+	// 'sim'=>[
+	// 	'sim'
+	// ],
+];
+// Aliases for commands
+$alias = [
+	'uptime'=>'server',
+	'uname'=>'server',
+	'who'=>'server',
+	'disk'=>'server'
+];
 $args = explode(' ', trim($message));
-
 $command = ltrim(array_shift($args), '/');
 $method = '';
 if (isset($args[0]) && in_array($args[0], $arguments[$command])) {
@@ -51,37 +67,36 @@ else {
 		$command = $alias[$command];
 	}
 }
-
-
 switch ($command) {
+	// case 'server':
+	// 	$class = 'Server';
+	// 	break;
+	// case 'help':
+	// 	$class = 'Help';
+	// 	break;
 	case 'compra':
 		$class = 'Compra';
 		break;
-	case 'S':
+	case 'sim':
 		$class = 'Compra';
 		break;
-	case 'N':
+	case 'nao':
 		$class = 'Compra';
 		break;
-	case 'ABC123':
+	case 'aBc123':
 		$class = 'Compra';
 		break;
-
 	default:
 		$class = 'Bot';
 }
-
 $hook = new $class($conf, $chat_id);
-
 if (!$hook->isTrusted()) {
 	$hook->unauthorized();
 	die();
 }
-
 if (!in_array($command, $commands)) {
 	$hook->unknown();
 }
-
 else {
 	if (isset($arguments[$command]) && in_array($method, $arguments[$command])) {
 		$hook->{$method}($args);

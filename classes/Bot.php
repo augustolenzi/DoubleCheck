@@ -53,6 +53,7 @@ class Bot
 
 	public function unknown()
 	{
-		return $this->send("Comando Desconhecido, tente /ajuda para ver uma lista de comandos");
+		return $this->send("Resposta Incorreta, Tente novamente.");
 	}
+
 }

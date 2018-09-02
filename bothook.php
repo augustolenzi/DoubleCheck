@@ -66,9 +66,6 @@ switch ($command) {
 	case 'ABC123':
 		$class = 'Compra';
 		break;
-	case 'N':
-		$class = 'Compra';
-		break;
 
 	default:
 		$class = 'Bot';

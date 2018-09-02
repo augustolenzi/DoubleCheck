@@ -27,7 +27,7 @@ class Compra extends Bot
 	public function f_compra()
 	{
 		$message = "<b>Finalização de Compra - Finalizada </b>" . chr(10) . chr(10);
-		$message .= "Obrigado por comprar conosco! volte sempre! <b>XXXX</b>: ";
+		$message .= "Obrigado por comprar com a <b>XXXXX</b>!" . chr(10) . "Sua Segurança em primeiro lugar!";
 
 		return $this->send($message);
 	}
